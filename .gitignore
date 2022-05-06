@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+#my stuff
+out
+image.ppm
