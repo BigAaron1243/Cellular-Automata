@@ -10,3 +10,5 @@ Works on arch linux
 "-" to reduce brush size and "=" to increase  
 spacebar to pause  
 all mouse buttons draw
+
+if you mess with some commented lines in the cpp file you can change it to QR world rules
