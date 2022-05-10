@@ -31,8 +31,8 @@ SDL_Window * init(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char name[50])
     return NULL;
 }
 
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 720;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 320;
 
 
 //QR world square
@@ -130,6 +130,9 @@ int main(int argc, char* args[])
                             brushwidth--;
                             brushheight--;
                             break;
+			case SDLK_ESCAPE:
+			    quit = true;
+			    break;
                     }
                     break;
                 case SDL_MOUSEBUTTONDOWN:
