@@ -30,8 +30,8 @@ SDL_Window * init(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char name[50])
     return NULL;
 }
 
-const int SCREEN_WIDTH = 256;
-const int SCREEN_HEIGHT = 256;
+const int SCREEN_WIDTH = 1600;
+const int SCREEN_HEIGHT = 900;
 
 
 //QR world square
@@ -57,7 +57,7 @@ void genimage(bool * pixelarray, int arraylength) {
     fprintf(imagebuffer, "%d %d\n", SCREEN_WIDTH, SCREEN_HEIGHT);
     fprintf(imagebuffer, "1\n");
 
-    const size_t imagelength = 3 * SCREEN_WIDTH * SCREEN_HEIGHT * 2;
+    const size_t imagelength = 3 * arraylength;
     
     bool imagearray[imagelength];
     for (int i = 0; i < imagelength; i += 3) 
@@ -66,7 +66,7 @@ void genimage(bool * pixelarray, int arraylength) {
         imagearray[i+1] = pixelarray[i/3];
         imagearray[i+2] = pixelarray[i/3];
     }
-    fwrite(imagearray, 2, imagelength, imagebuffer);
+    fwrite(imagearray, 1, imagelength, imagebuffer);
     fclose(imagebuffer);
 }
 
