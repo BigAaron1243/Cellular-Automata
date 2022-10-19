@@ -11,7 +11,7 @@ SDL_Window * init(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char name[50])
     bool success = true;
     SDL_Surface * screensurface = NULL;
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         printf("SDL could not initialise! SDL_Error: %s\n", SDL_GetError());
     }
@@ -30,8 +30,8 @@ SDL_Window * init(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char name[50])
     return NULL;
 }
 
-const int SCREEN_WIDTH = 1600;
-const int SCREEN_HEIGHT = 900;
+const int SCREEN_WIDTH = 960;
+const int SCREEN_HEIGHT = 540;
 
 
 //QR world square
@@ -41,7 +41,8 @@ const int SCREEN_HEIGHT = 900;
 //const int mask[4][2] = {{1,1},{-1,-1},{1,-1},{-1,1}};
 
 //Conways Game of Life
-const int mask[8][2] = {{1,1},{-1,-1},{1,-1},{-1,1},{0,1},{-1,0},{1,0},{0,-1}};
+const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
+const bool rules[18] = {0,0, 0,0, 0,1, 1,1, 0,0, 0,0, 0,0, 0,0, 0,0};
 
 const int masklength = 8;
 
@@ -69,7 +70,28 @@ void genimage(bool * pixelarray, int arraylength) {
     fwrite(imagearray, 1, imagelength, imagebuffer);
     fclose(imagebuffer);
 }
+bool * step(bool * mainarray, bool * bufferarray, bool * rules, bool * mask, int arraysize) {
 
+    bool* marray = (bool*)malloc(sizeof(bool) * arraysize);
+    bool* barray = (bool*)malloc(sizeof(bool) * arraysize);
+    for (int i = 1; i < SCREEN_WIDTH - 1; i++) {
+        for (int j = 1; j < SCREEN_HEIGHT - 1; j++) {
+            int adjcellcount = 0;
+            for (int k = 0; k < masklength; k++) {
+                adjcellcount += mainarray[(i + mask[2 * k]) * SCREEN_HEIGHT + j + mask[2 * k + 1]];
+            }
+            barray[i * SCREEN_HEIGHT + j] = rules[2 * adjcellcount + mainarray[i * SCREEN_HEIGHT + j]];
+        }
+    } 
+    
+    for (int i = 0; i < SCREEN_WIDTH; i++) {
+        for (int j = 0; j < SCREEN_HEIGHT; j++) {
+            marray[i * SCREEN_HEIGHT + j] = barray[i * SCREEN_HEIGHT + j];
+            barray[i * SCREEN_HEIGHT +j] = 0;
+        }
+    }
+    return marray;
+}
 SDL_Surface * load_media(const char imagePath[50])
 {
     SDL_Surface * image = IMG_Load( imagePath );
@@ -96,12 +118,12 @@ int main(int argc, char* args[])
     bool pause = false;
     bool mousevar = false;
     const int arraysize = SCREEN_WIDTH * SCREEN_HEIGHT;
-    bool mainarray[SCREEN_WIDTH][SCREEN_HEIGHT];
-    bool bufferarray[SCREEN_WIDTH][SCREEN_HEIGHT];
+    bool* mainarray = (bool*)malloc(sizeof(bool) * arraysize);
+    bool* bufferarray = (bool*)malloc(sizeof(bool) * arraysize);
     for (int i = 0; i < SCREEN_WIDTH; i++) {
         for (int j = 0; j < SCREEN_HEIGHT; j++) {
-            mainarray[i][j] = 0;
-            bufferarray[i][j] = 0;
+            mainarray[i * SCREEN_HEIGHT + j] = 0;
+            bufferarray[i * SCREEN_HEIGHT + j] = 0;
         }
     }
     SDL_Event e;
@@ -126,8 +148,8 @@ int main(int argc, char* args[])
                             brushheight++;
                             break;
                         case SDLK_MINUS:
-                            brushwidth--;
-                            brushheight--;
+                            if (brushwidth > 0) {brushwidth--;}
+                            if (brushheight > 0) {brushheight--;}
                             break;
 			case SDLK_ESCAPE:
 			    quit = true;
@@ -144,42 +166,33 @@ int main(int argc, char* args[])
         }
         
         SDL_GetMouseState( &x, &y );
-        if (mousevar == true) {
+        if (mousevar == true && x < SCREEN_WIDTH - brushwidth/2 && x > 0 + brushwidth/2 && y < SCREEN_HEIGHT - brushheight/2 && y > 0 + brushwidth/2) {
             for (int i = 0; i < brushwidth; i++) {
                 for (int j = 0; j < brushheight; j++) {
-                    mainarray[x+i-(brushwidth/2)][y+j-(brushheight/2)] = true;
+                    mainarray[(x+i-(brushwidth/2)) * SCREEN_HEIGHT + y + (j-(brushheight/2))] = true;
                 }
             }
         }
         if(!pause) {
-            for (int i = 1; i < SCREEN_WIDTH + 1; i++) {
-                for (int j = 1; j < SCREEN_HEIGHT + 1; j++) {
+            //mainarray = step(mainarray, bufferarray, rules, mask, arraysize);
+            
+            for (int i = 1; i < SCREEN_WIDTH - 1; i++) {
+                for (int j = 1; j < SCREEN_HEIGHT - 1; j++) {
                     int adjcellcount = 0;
                     for (int k = 0; k < masklength; k++) {
-                        adjcellcount += mainarray[i+mask[k][0]][j+mask[k][1]];
+                        adjcellcount += mainarray[(i + mask[2 * k]) * SCREEN_HEIGHT + j + mask[2 * k + 1]];
                     }
-                    if (mainarray[i][j] == 1) {
-                        if (adjcellcount == 2 || adjcellcount == 3) {
-                            bufferarray[i][j] = 1;
-                        } else {
-                            bufferarray[i][j] = 0;
-                        }
-                    } else {
-                        //uncomment || adjcellcount == 4 if u ar using qr rules
-                        if (adjcellcount == 3/* || adjcellcount == 4*/) {
-                            bufferarray[i][j] = 1;
-                        } else {
-                            bufferarray[i][j] = 0;
-                        }
-                    }
+                    bufferarray[i * SCREEN_HEIGHT + j] = rules[2 * adjcellcount + mainarray[i * SCREEN_HEIGHT + j]];
                 }
             } 
+            
             for (int i = 0; i < SCREEN_WIDTH; i++) {
                 for (int j = 0; j < SCREEN_HEIGHT; j++) {
-                    mainarray[i][j] = bufferarray[i][j];
-                    bufferarray[i][j] = 0;
+                    mainarray[i * SCREEN_HEIGHT + j] = bufferarray[i * SCREEN_HEIGHT + j];
+                    bufferarray[i * SCREEN_HEIGHT +j] = 0;
                 }
             }
+            
         }
 
         
@@ -188,7 +201,7 @@ int main(int argc, char* args[])
         
         for (int i = 0; i < SCREEN_HEIGHT; i++) {
             for (int j = 0; j < SCREEN_WIDTH; j++) {
-                mainarray1d[i* SCREEN_WIDTH + j] = mainarray[j][i];
+                mainarray1d[i* SCREEN_WIDTH + j] = mainarray[j * SCREEN_HEIGHT + i];
             }
         }
 
@@ -201,14 +214,6 @@ int main(int argc, char* args[])
     SDL_DestroyWindow( window );
     SDL_Quit();
 
-    //for (int i = 0; i < arraysize; i++) {
-    //    std::cout << mainarray1d[i];
-    //}
-    //for (int i = 0; i < SCREEN_WIDTH; i++) {
-    //    for (int j = 0; j < SCREEN_HEIGHT; j++) {
-    //        std::cout << mainarray[i][j];
-    //    }
-    //}
     return 0;
 }
 
