@@ -30,8 +30,8 @@ SDL_Window * init(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char name[50])
     return NULL;
 }
 
-const int SCREEN_WIDTH = 960;
-const int SCREEN_HEIGHT = 540;
+const int SCREEN_WIDTH = 1920;
+const int SCREEN_HEIGHT = 1040;
 
 
 //QR world square
@@ -41,8 +41,16 @@ const int SCREEN_HEIGHT = 540;
 //const int mask[4][2] = {{1,1},{-1,-1},{1,-1},{-1,1}};
 
 //Conways Game of Life
+//const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
+//const bool rules[18] = {0,0, 0,0, 0,1, 1,1, 0,0, 0,0, 0,0, 0,0, 0,0};
+
+//Maze
 const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
-const bool rules[18] = {0,0, 0,0, 0,1, 1,1, 0,0, 0,0, 0,0, 0,0, 0,0};
+const bool rules[18] = {0,0, 0,1, 0,1, 1,1, 0,1, 0,1, 0,0, 0,0, 0,0};
+
+//Wall
+//const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
+//const bool rules[18] = {0,0, 0,0, 0,1, 0,1, 1,1, 1,1, 1,0, 1,0, 1,0};
 
 const int masklength = 8;
 
@@ -130,6 +138,7 @@ int main(int argc, char* args[])
     SDL_Window * window = init(SCREEN_WIDTH, SCREEN_HEIGHT, "game of ife");
     SDL_Surface * screensurface = SDL_GetWindowSurface(window);
     SDL_Surface * loadimage = load_media("image.ppm");
+    int whichbutton = 0;
     while(!quit)
     {
         while(SDL_PollEvent(&e) != 0)
@@ -158,6 +167,12 @@ int main(int argc, char* args[])
                     break;
                 case SDL_MOUSEBUTTONDOWN:
                     mousevar = true;
+                    if (SDL_BUTTON_LEFT == e.button.button) { 
+                        whichbutton = 1;
+                    } else {
+                        whichbutton = 2;
+                    }
+                    printf("%d",whichbutton);
                     break;
                 case SDL_MOUSEBUTTONUP:
                     mousevar = false;
@@ -169,7 +184,12 @@ int main(int argc, char* args[])
         if (mousevar == true && x < SCREEN_WIDTH - brushwidth/2 && x > 0 + brushwidth/2 && y < SCREEN_HEIGHT - brushheight/2 && y > 0 + brushwidth/2) {
             for (int i = 0; i < brushwidth; i++) {
                 for (int j = 0; j < brushheight; j++) {
-                    mainarray[(x+i-(brushwidth/2)) * SCREEN_HEIGHT + y + (j-(brushheight/2))] = true;
+                    if (whichbutton == 1) {
+                        mainarray[(x+i-(brushwidth/2)) * SCREEN_HEIGHT + y + (j-(brushheight/2))] = true;
+                    } else {
+                    
+                        mainarray[(x+i-(brushwidth/2)) * SCREEN_HEIGHT + y + (j-(brushheight/2))] = false;
+                    }
                 }
             }
         }
