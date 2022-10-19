@@ -59,7 +59,7 @@ void genimage(bool * pixelarray, int arraylength) {
 
     const size_t imagelength = 3 * arraylength;
     
-    bool imagearray[imagelength];
+    bool* imagearray = (bool*)malloc(imagelength * sizeof(bool));
     for (int i = 0; i < imagelength; i += 3) 
     {
         imagearray[i] = pixelarray[i/3];
@@ -95,7 +95,7 @@ int main(int argc, char* args[])
     bool quit = false;
     bool pause = false;
     bool mousevar = false;
-    const int arraysize = 307200;
+    const int arraysize = SCREEN_WIDTH * SCREEN_HEIGHT;
     bool mainarray[SCREEN_WIDTH][SCREEN_HEIGHT];
     bool bufferarray[SCREEN_WIDTH][SCREEN_HEIGHT];
     for (int i = 0; i < SCREEN_WIDTH; i++) {
@@ -184,7 +184,7 @@ int main(int argc, char* args[])
 
         
     
-        bool mainarray1d[arraysize];
+        bool* mainarray1d = (bool*)malloc(arraysize * sizeof(bool));
         
         for (int i = 0; i < SCREEN_HEIGHT; i++) {
             for (int j = 0; j < SCREEN_WIDTH; j++) {
