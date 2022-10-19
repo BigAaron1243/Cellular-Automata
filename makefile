@@ -1,2 +1,2 @@
-out: main.cpp
-	g++ -o out main.cpp -lSDL2 -lSDL2_image
+out: main.c
+	gcc -o out main.c -l.\include\SDL2

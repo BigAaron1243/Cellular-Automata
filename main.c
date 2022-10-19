@@ -1,11 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdbool.h>
-#include <chrono>
-#include <iostream>
-#include <vector>
+
 
 SDL_Window * init(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char name[50])
 {
@@ -31,8 +30,8 @@ SDL_Window * init(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char name[50])
     return NULL;
 }
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 320;
+const int SCREEN_WIDTH = 256;
+const int SCREEN_HEIGHT = 256;
 
 
 //QR world square
@@ -58,7 +57,7 @@ void genimage(bool * pixelarray, int arraylength) {
     fprintf(imagebuffer, "%d %d\n", SCREEN_WIDTH, SCREEN_HEIGHT);
     fprintf(imagebuffer, "1\n");
 
-    int imagelength = arraylength * 3;
+    const size_t imagelength = 3 * SCREEN_WIDTH * SCREEN_HEIGHT * 2;
     
     bool imagearray[imagelength];
     for (int i = 0; i < imagelength; i += 3) 
@@ -67,7 +66,7 @@ void genimage(bool * pixelarray, int arraylength) {
         imagearray[i+1] = pixelarray[i/3];
         imagearray[i+2] = pixelarray[i/3];
     }
-    fwrite(imagearray, 1, imagelength, imagebuffer);
+    fwrite(imagearray, 2, imagelength, imagebuffer);
     fclose(imagebuffer);
 }
 
@@ -96,7 +95,7 @@ int main(int argc, char* args[])
     bool quit = false;
     bool pause = false;
     bool mousevar = false;
-    int arraysize = SCREEN_WIDTH * SCREEN_HEIGHT;
+    const int arraysize = 307200;
     bool mainarray[SCREEN_WIDTH][SCREEN_HEIGHT];
     bool bufferarray[SCREEN_WIDTH][SCREEN_HEIGHT];
     for (int i = 0; i < SCREEN_WIDTH; i++) {

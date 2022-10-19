@@ -34,3 +34,7 @@
 #my stuff
 out
 image.ppm
+*.tar
+*.gz
+*.zip
+*.bak
