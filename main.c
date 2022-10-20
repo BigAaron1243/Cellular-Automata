@@ -30,23 +30,24 @@ SDL_Window * init(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char name[50])
     return NULL;
 }
 
-const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1040;
+const int SCREEN_WIDTH = 1000;
+const int SCREEN_HEIGHT = 800;
 
 
 //QR world square
-//const int mask[4][2] = {{0,1},{-1,0},{1,0},{0,-1}};
+//const int mask[8] = {0,1,-1,0,1,0,0,-1};
 
 //QR world diagonal
-//const int mask[4][2] = {{1,1},{-1,-1},{1,-1},{-1,1}};
+//const int mask[8] = {1,1,-1,-1,1,-1,-1,1};
+//const int rules[10] = {0, 0, 0, 0, 1, 1, 0, 1, 1, 0};
 
 //Conways Game of Life
-//const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
-//const bool rules[18] = {0,0, 0,0, 0,1, 1,1, 0,0, 0,0, 0,0, 0,0, 0,0};
+const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
+const bool rules[18] = {0,0, 0,0, 0,1, 1,1, 0,0, 0,0, 0,0, 0,0, 0,0};
 
 //Maze
-const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
-const bool rules[18] = {0,0, 0,1, 0,1, 1,1, 0,1, 0,1, 0,0, 0,0, 0,0};
+//const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
+//const bool rules[18] = {0,0, 0,1, 0,1, 1,1, 0,1, 0,1, 0,0, 0,0, 0,0};
 
 //Wall
 //const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
