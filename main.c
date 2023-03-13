@@ -78,6 +78,7 @@ void genimage(bool * pixelarray, int arraylength) {
     }
     fwrite(imagearray, 1, imagelength, imagebuffer);
     fclose(imagebuffer);
+	system("pnmtopng image.ppm > result.png");
 }
 bool * step(bool * mainarray, bool * bufferarray, bool * rules, bool * mask, int arraysize) {
 
@@ -227,7 +228,7 @@ int main(int argc, char* args[])
         }
 
         genimage(mainarray1d, arraysize);
-        loadimage = load_media("image.ppm");
+        loadimage = load_media("result.png");
         SDL_BlitSurface(loadimage, NULL, screensurface, NULL);
         SDL_UpdateWindowSurface(window);
         SDL_FreeSurface(loadimage);
