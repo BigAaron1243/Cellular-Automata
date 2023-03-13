@@ -3,11 +3,10 @@
 Dependencies:  
 *sdl2*  
 *sdl2_image*
-(get these with a package manager of your choice) or build them, idk
 
 Works on most linux
 
-#### how 2 use:
+#### controls:
 "-" to reduce brush size and "=" to increase  
 spacebar to pause  
 all mouse buttons draw
