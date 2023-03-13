@@ -4,8 +4,6 @@ Dependencies:
 *sdl2*  
 *sdl2_image*
 
-Works on most linux
-
 #### controls:
 "-" to reduce brush size and "=" to increase  
 spacebar to pause  
