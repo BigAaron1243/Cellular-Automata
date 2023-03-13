@@ -1,5 +1,6 @@
 out
 image.ppm
+result.png
 *.tar
 *.gz
 *.zip
