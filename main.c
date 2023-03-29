@@ -30,8 +30,8 @@ SDL_Window * init(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char name[50])
     return NULL;
 }
 
-const int SCREEN_WIDTH = 1000;
-const int SCREEN_HEIGHT = 800;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
 
 //QR world square
@@ -42,8 +42,8 @@ const int SCREEN_HEIGHT = 800;
 //const int rules[10] = {0, 0, 0, 0, 1, 1, 0, 1, 1, 0};
 
 //Conways Game of Life
-const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
-const bool rules[18] = {0,0, 0,0, 0,1, 1,1, 0,0, 0,0, 0,0, 0,0, 0,0};
+int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
+bool rules[18] = {0,0, 0,0, 0,1, 1,1, 0,0, 0,0, 0,0, 0,0, 0,0};
 
 //Maze
 //const int mask[16] = {1,1,-1,-1,1,-1,-1,1,0,1,-1,0,1,0,0,-1};
@@ -80,7 +80,7 @@ void genimage(bool * pixelarray, int arraylength) {
     fclose(imagebuffer);
 	//system("pnmtojpeg image.ppm > result.jpg");
 }
-bool * step(bool * mainarray, bool * bufferarray, bool * rules, bool * mask, int arraysize) {
+bool * step(bool * mainarray, bool * rules, int * mask, int arraysize) {
 
     bool* marray = (bool*)malloc(sizeof(bool) * arraysize);
     bool* barray = (bool*)malloc(sizeof(bool) * arraysize);
@@ -149,6 +149,7 @@ int main(int argc, char* args[])
                 case SDL_QUIT:
                     quit = true;
                     break;
+                    
                 case SDL_KEYDOWN:
                     switch(e.key.keysym.sym) {
                         case SDLK_SPACE:
@@ -162,10 +163,15 @@ int main(int argc, char* args[])
                             if (brushwidth > 0) {brushwidth--;}
                             if (brushheight > 0) {brushheight--;}
                             break;
-			case SDLK_ESCAPE:
-			    quit = true;
-			    break;
+                        case SDLK_i:
+                    
+                        case SDLK_ESCAPE:
+                            quit = true;
+                            break;
                     }
+                    break;
+                case SDL_TEXTINPUT:
+                    printf(e.text.text);
                     break;
                 case SDL_MOUSEBUTTONDOWN:
                     mousevar = true;
@@ -174,7 +180,6 @@ int main(int argc, char* args[])
                     } else {
                         whichbutton = 2;
                     }
-                    printf("%d",whichbutton);
                     break;
                 case SDL_MOUSEBUTTONUP:
                     mousevar = false;
@@ -196,9 +201,9 @@ int main(int argc, char* args[])
             }
         }
         if(!pause) {
-            //mainarray = step(mainarray, bufferarray, rules, mask, arraysize);
+            mainarray = step(mainarray, rules, mask, arraysize);
             
-            for (int i = 1; i < SCREEN_WIDTH - 1; i++) {
+            /*for (int i = 1; i < SCREEN_WIDTH - 1; i++) {
                 for (int j = 1; j < SCREEN_HEIGHT - 1; j++) {
                     int adjcellcount = 0;
                     for (int k = 0; k < masklength; k++) {
@@ -214,7 +219,7 @@ int main(int argc, char* args[])
                     bufferarray[i * SCREEN_HEIGHT +j] = 0;
                 }
             }
-            
+            */
         }
 
         
