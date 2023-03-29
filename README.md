@@ -9,4 +9,6 @@ Dependencies:
 spacebar to pause  
 all mouse buttons draw
 
-In lines 37-54 of main.c you can find different life types
+In lines 37-54 of main.c you can find different life types  
+Preview:
+![Preview](http://BigAaron1243/cellular-automata/images/gameofllife.png)
