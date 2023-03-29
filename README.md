@@ -11,4 +11,4 @@ all mouse buttons draw
 
 In lines 37-54 of main.c you can find different life types  
 Preview:
-![Preview](http://github.com/BigAaron1243/cellular-automata/blob/main/images/gameoflife.png)
+![Preview](https://github.com/BigAaron1243/cellular-automata/blob/main/images/gameoflife.png)
