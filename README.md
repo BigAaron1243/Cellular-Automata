@@ -10,5 +10,3 @@ spacebar to pause
 all mouse buttons draw
 
 In lines 37-54 of main.c you can find different life types
-
-Not working at present
