@@ -54,6 +54,7 @@ bool rules[18] = {0,0, 0,0, 0,1, 1,1, 0,0, 0,0, 0,0, 0,0, 0,0};
 //const bool rules[18] = {0,0, 0,0, 0,1, 0,1, 1,1, 1,1, 1,0, 1,0, 1,0};
 
 const int masklength = 8;
+int bombaxy = 1000;
 
 void genimage(bool * pixelarray, int arraylength) {
     FILE *imagebuffer;
@@ -91,6 +92,12 @@ bool * step(bool * mainarray, bool * rules, int * mask, int arraysize) {
                 adjcellcount += mainarray[(i + mask[2 * k]) * SCREEN_HEIGHT + j + mask[2 * k + 1]];
             }
             barray[i * SCREEN_HEIGHT + j] = rules[2 * adjcellcount + mainarray[i * SCREEN_HEIGHT + j]];
+            bool cringearray = barray[i * SCREEN_HEIGHT + j];
+            if (cringearray != 1 && cringearray != 0) {
+                //printf("%d, ", cringearray);
+                barray[i * SCREEN_HEIGHT + j] = 0;
+            }
+
         }
     } 
     
@@ -193,6 +200,7 @@ int main(int argc, char* args[])
                 for (int j = 0; j < brushheight; j++) {
                     if (whichbutton == 1) {
                         mainarray[(x+i-(brushwidth/2)) * SCREEN_HEIGHT + y + (j-(brushheight/2))] = true;
+                        bombaxy = (x+i-(brushwidth/2)) * SCREEN_HEIGHT + y + (j-(brushheight/2));
                     } else {
                     
                         mainarray[(x+i-(brushwidth/2)) * SCREEN_HEIGHT + y + (j-(brushheight/2))] = false;
@@ -202,6 +210,8 @@ int main(int argc, char* args[])
         }
         if(!pause) {
             mainarray = step(mainarray, rules, mask, arraysize);
+
+            //printf("%d, ", (int)mainarray[bombaxy]);
             
             /*for (int i = 1; i < SCREEN_WIDTH - 1; i++) {
                 for (int j = 1; j < SCREEN_HEIGHT - 1; j++) {
