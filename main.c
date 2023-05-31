@@ -79,7 +79,6 @@ void genimage(bool * pixelarray, int arraylength) {
     }
     fwrite(imagearray, 1, imagelength, imagebuffer);
     fclose(imagebuffer);
-	//system("pnmtojpeg image.ppm > result.jpg");
 }
 bool * step(bool * mainarray, bool * rules, int * mask, int arraysize) {
 
@@ -94,7 +93,6 @@ bool * step(bool * mainarray, bool * rules, int * mask, int arraysize) {
             barray[i * SCREEN_HEIGHT + j] = rules[2 * adjcellcount + mainarray[i * SCREEN_HEIGHT + j]];
             bool cringearray = barray[i * SCREEN_HEIGHT + j];
             if (cringearray != 1 && cringearray != 0) {
-                //printf("%d, ", cringearray);
                 barray[i * SCREEN_HEIGHT + j] = 0;
             }
 
