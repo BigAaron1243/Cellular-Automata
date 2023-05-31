@@ -91,8 +91,8 @@ bool * step(bool * mainarray, bool * rules, int * mask, int arraysize) {
                 adjcellcount += mainarray[(i + mask[2 * k]) * SCREEN_HEIGHT + j + mask[2 * k + 1]];
             }
             barray[i * SCREEN_HEIGHT + j] = rules[2 * adjcellcount + mainarray[i * SCREEN_HEIGHT + j]];
-            bool cringearray = barray[i * SCREEN_HEIGHT + j];
-            if (cringearray != 1 && cringearray != 0) {
+            bool carray = barray[i * SCREEN_HEIGHT + j];
+            if (carray != 1 && carray != 0) {
                 barray[i * SCREEN_HEIGHT + j] = 0;
             }
 
